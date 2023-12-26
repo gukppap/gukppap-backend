@@ -48,23 +48,13 @@ func (us *URLService) GetURLByOrignalURL(ctx context.Context, originlURL string)
 	return resURL, nil
 }
 
-func (us *URLService) UpdateURL(ctx context.Context, URL domain.URL) (*domain.URL, error) {
-	resURL, err := us.repo.UpdateURL(ctx, URL)
+func (us *URLService) UpdateURL(ctx context.Context, shortcutURL string, URL *domain.URL) (*domain.URL, error) {
+	resURL, err := us.repo.UpdateURL(ctx, shortcutURL, URL)
 	if err != nil {
 		return nil, err
 	}
 
 	return resURL, nil
-}
-
-func (us *URLService) DeleteByShortcutURL(ctx context.Context, shortcutURL string) error {
-
-	err := us.repo.DeleteByShortcutURL(ctx, shortcutURL)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func (us *URLService) DeleteByOriginalURL(ctx context.Context, originURL string) error {
