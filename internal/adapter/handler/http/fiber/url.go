@@ -56,7 +56,9 @@ func (uh *urlHandler) createURL(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(&dto.GeneralDTO{
 		Status:  fiber.StatusCreated,
 		Message: "successed create shorcut url",
-		Data:    res,
+		Data: &dto.CreateURLDTO{
+			ShortcutURL: res.ShortcutURL,
+		},
 	})
 
 }
