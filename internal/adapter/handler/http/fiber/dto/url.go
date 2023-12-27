@@ -1,6 +1,6 @@
 package dto
 
-type CreateURLDTO struct {
+type URLDTO struct {
 	OriginalURL string `json:"originalURL,omitempty"`
 	ShortcutURL string `json:"shortcutURL,omitempty"`
 }

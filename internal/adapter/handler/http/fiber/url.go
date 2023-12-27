@@ -20,7 +20,7 @@ func NewURLHandler(service *service.URLService) *urlHandler {
 
 func (uh *urlHandler) createURL(c *fiber.Ctx) error {
 
-	body := new(dto.CreateURLDTO)
+	body := new(dto.URLDTO)
 	if err := c.BodyParser(body); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(&dto.GeneralDTO{
 			Status:  fiber.StatusBadRequest,
@@ -56,9 +56,44 @@ func (uh *urlHandler) createURL(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(&dto.GeneralDTO{
 		Status:  fiber.StatusCreated,
 		Message: "successed create shorcut url",
-		Data: &dto.CreateURLDTO{
+		Data: &dto.URLDTO{
 			ShortcutURL: res.ShortcutURL,
 		},
+	})
+
+}
+
+func (uh *urlHandler) UpdateURL(c *fiber.Ctx) error {
+
+	body := new(dto.URLDTO)
+	if err := c.BodyParser(body); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusBadRequest,
+			Message: "unable http body",
+		})
+	}
+
+	// 유효성 검사
+	if _, err := url.ParseRequestURI(body.OriginalURL); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusBadRequest,
+			Message: "Not valid url",
+		})
+	}
+
+	if _, err := uh.service.UpdateURL(c.Context(), body.ShortcutURL, &domain.URL{
+		OriginalURL: body.OriginalURL,
+		ShortcutURL: body.ShortcutURL,
+	}); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusInternalServerError,
+			Message: "server error: " + err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(&dto.GeneralDTO{
+		Status:  fiber.StatusOK,
+		Message: "successed update",
 	})
 
 }
