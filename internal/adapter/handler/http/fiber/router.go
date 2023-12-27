@@ -22,6 +22,7 @@ func NewRouter(urlH *urlHandler) *router {
 			{
 				urls.Post("/shortcut", urlH.createURL)
 				urls.Patch("/history", urlH.UpdateURL)
+				urls.Delete("/history", urlH.DeleteURL)
 			}
 
 		}

@@ -97,3 +97,35 @@ func (uh *urlHandler) UpdateURL(c *fiber.Ctx) error {
 	})
 
 }
+
+func (uh *urlHandler) DeleteURL(c *fiber.Ctx) error {
+
+	body := new(dto.URLDTO)
+	if err := c.BodyParser(body); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusBadRequest,
+			Message: "unable http body",
+		})
+	}
+
+	// 유효성 검사
+	if _, err := url.ParseRequestURI(body.OriginalURL); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusBadRequest,
+			Message: "Not valid url",
+		})
+	}
+
+	if err := uh.service.DeleteByOriginalURL(c.Context(), body.OriginalURL); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusInternalServerError,
+			Message: "server error: " + err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(&dto.GeneralDTO{
+		Status:  fiber.StatusOK,
+		Message: "successed delete",
+	})
+
+}
