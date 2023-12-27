@@ -38,7 +38,7 @@ func (ur *urlRepository) GetURLByOrignalURL(ctx context.Context, originlURL stri
 	return &domain.URL{ShortcutURL: URL.ShortcutURL, OriginalURL: URL.OriginURL}, err
 }
 
-func (ur *urlRepository) UpdateURL(ctx context.Context, URL *domain.URL) (*domain.URL, error) {
+func (ur *urlRepository) UpdateURL(ctx context.Context, shortuctURL string, URL *domain.URL) (*domain.URL, error) {
 	_, err := ur.db.Url.Update().Where(
 		url.ShortcutURL(URL.ShortcutURL),
 	).
@@ -56,3 +56,9 @@ func (ur *urlRepository) DeleteByOriginalURL(ctx context.Context, originURL stri
 
 	return err
 }
+
+// var name type
+
+// var name = value
+
+// name := value

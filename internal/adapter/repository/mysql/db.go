@@ -31,9 +31,9 @@ func NewDB(ctx context.Context) (*DB, error) {
 		return nil, err
 	}
 
-	maxPoolIdle, err := strconv.Atoi(os.Getenv("DATASOURCE_POOL_IDLE_CONN"))
-	maxPoolOpen, err := strconv.Atoi(os.Getenv("DATASOURCE_POOL_MAX_CONN"))
-	maxPollLifeTime, err := strconv.Atoi(os.Getenv("DATASOURCE_POOL_LIFE_TIME"))
+	maxPoolIdle, err := strconv.Atoi(os.Getenv("DB_POOL_IDLE_CONN"))
+	maxPoolOpen, err := strconv.Atoi(os.Getenv("DB_POOL_MAX_CONN"))
+	maxPollLifeTime, err := strconv.Atoi(os.Getenv("DB_POOL_LIFE_TIME"))
 	if err != nil {
 		return nil, err
 	}
