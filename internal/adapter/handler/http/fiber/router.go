@@ -21,6 +21,7 @@ func NewRouter(urlH *urlHandler) *router {
 			urls := v1.Group("/urls")
 			{
 				urls.Get("/shortcut", urlH.getURLByOriginalURL)
+				urls.Get("original", urlH.getURLByShortcutURL)
 				urls.Post("/shortcut", urlH.createURL)
 				urls.Patch("/history", urlH.UpdateURL)
 				urls.Delete("/history", urlH.DeleteURL)

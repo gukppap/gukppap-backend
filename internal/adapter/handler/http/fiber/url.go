@@ -18,6 +18,42 @@ func NewURLHandler(service *service.URLService) *urlHandler {
 	return &urlHandler{service}
 }
 
+func (uh *urlHandler) getURLByShortcutURL(c *fiber.Ctx) error {
+
+	body := new(dto.URLDTO)
+	if err := c.BodyParser(body); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusBadRequest,
+			Message: "unable http body",
+		})
+	}
+
+	res, err := uh.service.GetURLByShortcutURL(c.Context(), body.ShortcutURL)
+
+	if _, ok := err.(*ent.NotFoundError); ok {
+		return c.Status(fiber.StatusBadRequest).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusBadRequest,
+			Message: "not found shortcut",
+		})
+	}
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusInternalServerError,
+			Message: "server error: " + err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(&dto.GeneralDTO{
+		Status:  fiber.StatusOK,
+		Message: "success selected",
+		Data: &dto.URLDTO{
+			OriginalURL: res.OriginalURL,
+		},
+	})
+
+}
+
 func (uh *urlHandler) getURLByOriginalURL(c *fiber.Ctx) error {
 
 	body := new(dto.URLDTO)
