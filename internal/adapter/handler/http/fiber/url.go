@@ -18,6 +18,50 @@ func NewURLHandler(service *service.URLService) *urlHandler {
 	return &urlHandler{service}
 }
 
+func (uh *urlHandler) getURLByOriginalURL(c *fiber.Ctx) error {
+
+	body := new(dto.URLDTO)
+	if err := c.BodyParser(body); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusBadRequest,
+			Message: "unable http body",
+		})
+	}
+
+	// 유효성 검사
+	if _, err := url.ParseRequestURI(body.OriginalURL); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusBadRequest,
+			Message: "Not valid url",
+		})
+	}
+
+	res, err := uh.service.GetURLByOrignalURL(c.Context(), body.OriginalURL)
+
+	if _, ok := err.(*ent.NotFoundError); ok {
+		return c.Status(fiber.StatusBadRequest).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusBadRequest,
+			Message: "not found url",
+		})
+	}
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusInternalServerError,
+			Message: "server error: " + err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(&dto.GeneralDTO{
+		Status:  fiber.StatusOK,
+		Message: "succesed get",
+		Data: dto.URLDTO{
+			ShortcutURL: res.ShortcutURL,
+		},
+	})
+
+}
+
 func (uh *urlHandler) createURL(c *fiber.Ctx) error {
 
 	body := new(dto.URLDTO)

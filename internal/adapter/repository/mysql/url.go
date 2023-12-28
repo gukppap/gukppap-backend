@@ -26,6 +26,9 @@ func (ur *urlRepository) GetURLByShortcutURL(ctx context.Context, shortcutURL st
 	URL, err := ur.db.Client.Url.Query().Where(
 		url.ShortcutURL(shortcutURL),
 	).Only(ctx)
+	if err != nil {
+		return nil, err
+	}
 
 	return &domain.URL{ShortcutURL: URL.ShortcutURL, OriginalURL: URL.OriginURL}, err
 }
@@ -34,6 +37,9 @@ func (ur *urlRepository) GetURLByOrignalURL(ctx context.Context, originlURL stri
 	URL, err := ur.db.Client.Url.Query().Where(
 		url.OriginURL(originlURL),
 	).Only(ctx)
+	if err != nil {
+		return nil, err
+	}
 
 	return &domain.URL{ShortcutURL: URL.ShortcutURL, OriginalURL: URL.OriginURL}, err
 }

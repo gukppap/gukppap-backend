@@ -40,7 +40,7 @@ func (us *URLService) GetURLByShortcutURL(ctx context.Context, shortcutURL strin
 }
 
 func (us *URLService) GetURLByOrignalURL(ctx context.Context, originlURL string) (*domain.URL, error) {
-	resURL, err := us.repo.GetURLByShortcutURL(ctx, originlURL)
+	resURL, err := us.repo.GetURLByOrignalURL(ctx, originlURL)
 	if err != nil {
 		return nil, err
 	}
