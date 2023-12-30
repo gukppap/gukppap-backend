@@ -14,6 +14,8 @@ func NewRouter(urlH *urlHandler) *router {
 
 	app := fiber.New()
 
+	app.Get("/:shortcut", urlH.redirectURL)
+
 	api := app.Group("/api")
 	{
 		v1 := api.Group("/v1")

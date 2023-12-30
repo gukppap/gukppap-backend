@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"gukppap-backend/internal/adapter/handler/http/fiber/dto"
 	"gukppap-backend/internal/adapter/repository/mysql/ent"
 	"gukppap-backend/internal/core/domain"
@@ -16,6 +17,36 @@ type urlHandler struct {
 
 func NewURLHandler(service *service.URLService) *urlHandler {
 	return &urlHandler{service}
+}
+
+func (uh *urlHandler) redirectURL(c *fiber.Ctx) error {
+	shortcut := c.Params("shortcut")
+	if shortcut == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusBadRequest,
+			Message: "unable http query string",
+		})
+	}
+
+	fmt.Println(shortcut)
+
+	res, err := uh.service.GetURLByShortcutURL(c.Context(), shortcut)
+
+	if _, ok := err.(*ent.NotFoundError); ok {
+		return c.Status(fiber.StatusBadRequest).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusBadRequest,
+			Message: "not found",
+		})
+	}
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(&dto.GeneralDTO{
+			Status:  fiber.StatusInternalServerError,
+			Message: "server error: " + err.Error(),
+		})
+	}
+
+	return c.Redirect(res.OriginalURL, fiber.StatusMovedPermanently)
 }
 
 func (uh *urlHandler) getURLByShortcutURL(c *fiber.Ctx) error {
