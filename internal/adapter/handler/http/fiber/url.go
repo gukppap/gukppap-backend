@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"gukppap-backend/internal/adapter/handler/http/fiber/dto"
 	"gukppap-backend/internal/adapter/repository/mysql/ent"
 	"gukppap-backend/internal/core/domain"
@@ -27,8 +26,6 @@ func (uh *urlHandler) redirectURL(c *fiber.Ctx) error {
 			Message: "unable http query string",
 		})
 	}
-
-	fmt.Println(shortcut)
 
 	res, err := uh.service.GetURLByShortcutURL(c.Context(), shortcut)
 

@@ -5,7 +5,7 @@ import (
 	"gukppap-backend/internal/core/domain"
 	"gukppap-backend/internal/core/port"
 
-	"github.com/dchest/uniuri"
+	"github.com/google/uuid"
 )
 
 // implements port.URLService interface
@@ -20,7 +20,9 @@ func NewURLService(repo port.URLRepository) *URLService {
 }
 
 func (us *URLService) CreateURL(ctx context.Context, URL *domain.URL) (*domain.URL, error) {
-	URL.ShortcutURL = uniuri.NewLenChars(6, []byte(URL.OriginalURL))
+
+	uuid := ([]rune(uuid.New().String()))[:7]
+	URL.ShortcutURL = string(uuid)
 
 	resURL, err := us.repo.CreateURL(ctx, URL)
 	if err != nil {

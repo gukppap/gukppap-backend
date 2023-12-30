@@ -4,9 +4,9 @@ go 1.21.2
 
 require (
 	entgo.io/ent v0.12.5
-	github.com/dchest/uniuri v1.2.0
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/gofiber/fiber/v2 v2.51.0
+	github.com/google/uuid v1.5.0
 	github.com/joho/godotenv v1.5.1
 )
 
@@ -17,7 +17,6 @@ require (
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/go-openapi/inflect v0.19.0 // indirect
 	github.com/google/go-cmp v0.5.6 // indirect
-	github.com/google/uuid v1.5.0 // indirect
 	github.com/hashicorp/hcl/v2 v2.13.0 // indirect
 	github.com/klauspost/compress v1.16.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
