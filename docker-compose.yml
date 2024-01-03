@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+
+  app:
+    build:  
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: guckppap_backend
+    networks:
+      - guckppap-network
+    ports:
+      - 9190:9190
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.2.0
+    container_name: guckppap_mysql
+    ports: 
+      - 3306:3306
+    networks:
+      - guckppap-network
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      TZ: Asia/Seoul
+    healthcheck:
+      test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  guckppap-network:
+
