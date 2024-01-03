@@ -1,0 +1,26 @@
+# exclude any development-specific files
+.vscode/
+.idea/
+
+
+
+# exclude build artifacts
+tmp/
+
+# exclude any version control files
+.git/
+
+# exclude Docker files
+Dockerfile*
+docker-compose*.yml
+
+# exclude any development-specific files
+**/*_test.go
+.*ignore
+*.env
+*.log
+*.md
+*.out
+*.toml
+*.test
+*.yml
