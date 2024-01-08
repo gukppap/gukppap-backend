@@ -21,7 +21,7 @@ func (a *appError) Error() string {
 }
 
 // New 함수는 appError의 생성자 입니다. 사용자는 이 함수를 통해 error를 제어 하게 됩니다.
-func New(cause string, errIdent errIdentType) error {
+func New(errIdent errIdentType, cause string) error {
 	return &appError{
 		cause:    cause,
 		errIdent: errIdent,
