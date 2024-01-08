@@ -54,7 +54,9 @@ Content-Type: application/json
 
 {
     "data": {
-        "shortcut": "ai28h2z"    
+        "url": "https://github.com/JJerBum",
+        "shortcut": "ai28h2z",
+        "exp": "1704359070"
     }
 }
 ```
@@ -105,7 +107,7 @@ Content-Type: application/json
 Content-Type: application/json
 
 {
-    "shortcut": "ai28h2z"
+    "url": "https://github.com/JJerBum"
 }
 ```
 
