@@ -17,7 +17,7 @@ type UrlService struct {
 	shortcutRepository ports.ShortcutRepository
 }
 
-func (us *URLService) GetByUrl(ctx context.Context, url string) (*domain.Shortcut, error) {
+func (us *UrlService) GetByUrl(ctx context.Context, url string) (*domain.Shortcut, error) {
 
 	shortcut, err := us.shortcutRepository.GetByUrl(ctx, url)
 	if err != nil {
@@ -31,7 +31,7 @@ func (us *URLService) GetByUrl(ctx context.Context, url string) (*domain.Shortcu
 	return shortcut, nil
 }
 
-func (us *URLService) GetByShortcut(ctx context.Context, shortuct string) (*domain.Shortcut, error) {
+func (us *UrlService) GetByShortcut(ctx context.Context, shortuct string) (*domain.Shortcut, error) {
 
 	shortcut, err := us.shortcutRepository.GetByShortcut(ctx, shortuct)
 	if err != nil {
@@ -45,7 +45,7 @@ func (us *URLService) GetByShortcut(ctx context.Context, shortuct string) (*doma
 	return shortcut, nil
 }
 
-func (us *URLService) Save(ctx context.Context, url string) error {
+func (us *UrlService) Save(ctx context.Context, url string) error {
 
 	var shortcut string
 	var i int
@@ -76,7 +76,7 @@ func (us *URLService) Save(ctx context.Context, url string) error {
 	return nil
 }
 
-func (us *URLService) Update(ctx context.Context, shortcut *domain.Shortcut) error {
+func (us *UrlService) Update(ctx context.Context, shortcut *domain.Shortcut) error {
 	if err := us.shortcutRepository.Update(ctx, shortcut); err != nil {
 		return apperrors.New(apperrors.InternalServerError, err.Error())
 	}
@@ -84,7 +84,7 @@ func (us *URLService) Update(ctx context.Context, shortcut *domain.Shortcut) err
 	return nil
 }
 
-func (us *URLService) Delete(ctx context.Context, url string) error {
+func (us *UrlService) Delete(ctx context.Context, url string) error {
 	if err := us.shortcutRepository.Delete(ctx, url); err != nil {
 		return apperrors.New(apperrors.InternalServerError, err.Error())
 	}

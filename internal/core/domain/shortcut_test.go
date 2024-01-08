@@ -1,9 +1,10 @@
 package domain_test
 
 import (
-	"gukppap-backend/internal/core/domain"
 	"testing"
 	"time"
+
+	"github.com/guckppap/gukppap-backend/internal/core/domain"
 )
 
 // TestShortcut_ISValid 함수는 Shorcut 구초제의 IsValid함수가 정상적으로 동작하는 확인하는 함수 입니다.
