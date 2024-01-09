@@ -32,6 +32,16 @@ func (us *ShortcutService) GetByUrl(ctx context.Context, url string) (*domain.Sh
 		return nil, apperrors.New(apperrors.InternalServerError, err.Error())
 	}
 
+	// shortcut이 만료되었는지 확인하는 부분
+	if shortcut.IsValid() == false {
+		if err := us.shortcutRepository.Delete(ctx, shortcut.Url); err != nil {
+			return nil, apperrors.New(apperrors.InternalServerError, err.Error())
+		}
+
+		// Shortcut이 만료되었습니다.
+		return nil, apperrors.New(apperrors.BadReqeustError, "Shortcut has expired.")
+	}
+
 	return shortcut, nil
 }
 
@@ -44,6 +54,16 @@ func (us *ShortcutService) GetByShortcut(ctx context.Context, shortuct string) (
 		}
 
 		return nil, apperrors.New(apperrors.InternalServerError, err.Error())
+	}
+
+	// shortcut이 만료되었는지 확인하는 부분
+	if shortcut.IsValid() == false {
+		if err := us.shortcutRepository.Delete(ctx, shortcut.Url); err != nil {
+			return nil, apperrors.New(apperrors.InternalServerError, err.Error())
+		}
+
+		// Shortcut이 만료되었습니다.
+		return nil, apperrors.New(apperrors.BadReqeustError, "Shortcut has expired.")
 	}
 
 	return shortcut, nil
@@ -92,6 +112,16 @@ func (us *ShortcutService) Update(ctx context.Context, shortcut, want string) er
 		return apperrors.New(apperrors.InternalServerError, err.Error())
 	}
 
+	// shortcut이 만료되었는지 확인하는 부분
+	if originShortcut.IsValid() == false {
+		if err := us.shortcutRepository.Delete(ctx, originShortcut.Url); err != nil {
+			return apperrors.New(apperrors.InternalServerError, err.Error())
+		}
+
+		// Shortcut이 만료되었습니다.
+		return apperrors.New(apperrors.BadReqeustError, "Shortcut has expired.")
+	}
+
 	// want값이 존재 하는가? (존재하면 BadReqeust)
 	if _, err := us.shortcutRepository.GetByShortcut(ctx, want); err == nil {
 		//want는 이미 존재하는 값 입니다.
@@ -99,8 +129,7 @@ func (us *ShortcutService) Update(ctx context.Context, shortcut, want string) er
 	}
 
 	// update 하기
-	originShortcut.Shortcut = want
-	if err := us.shortcutRepository.Update(ctx, originShortcut); err != nil {
+	if err := us.shortcutRepository.Update(ctx, shortcut, want); err != nil {
 		return apperrors.New(apperrors.InternalServerError, err.Error())
 	}
 
@@ -109,11 +138,23 @@ func (us *ShortcutService) Update(ctx context.Context, shortcut, want string) er
 
 func (us *ShortcutService) Delete(ctx context.Context, url string) error {
 
-	if _, err := us.GetByUrl(ctx, url); err != nil {
+	shortcut, err := us.GetByUrl(ctx, url)
+	if err != nil {
 		//존재하지 않은 url를 삭제할 수 없습니다.
 		return apperrors.New(apperrors.BadReqeustError, "Cannot delete url that does not exist.")
 	}
 
+	// shortcut이 만료되었는지 확인하는 부분
+	if shortcut.IsValid() == false {
+		if err := us.shortcutRepository.Delete(ctx, shortcut.Url); err != nil {
+			return apperrors.New(apperrors.InternalServerError, err.Error())
+		}
+
+		// Shortcut이 만료되었습니다.
+		return apperrors.New(apperrors.BadReqeustError, "Shortcut has expired.")
+	}
+
+	// 정상적으로 삭제
 	if err := us.shortcutRepository.Delete(ctx, url); err != nil {
 		return apperrors.New(apperrors.InternalServerError, err.Error())
 	}

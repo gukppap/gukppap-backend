@@ -12,6 +12,6 @@ type ShortcutRepository interface {
 	GetByUrl(ctx context.Context, url string) (*domain.Shortcut, error)
 	GetByShortcut(ctx context.Context, shortuct string) (*domain.Shortcut, error)
 	Save(ctx context.Context, shortcut *domain.Shortcut) error
-	Update(ctx context.Context, shortcut *domain.Shortcut) error
+	Update(ctx context.Context, shortcut, want string) error
 	Delete(ctx context.Context, url string) error
 }

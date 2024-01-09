@@ -1,6 +1,8 @@
 package apperrors
 
 var (
-	Internal = newErrIdent("internal")
-	NotFound = newErrIdent("notFound")
+	InternalServerError = newErrIdent("internalServerError")
+	NotFoundError       = newErrIdent("NotFoundError")
+	BadReqeustError     = newErrIdent("BadRequestError")
+	RequestParsingError = newErrIdent("RequestParsingError")
 )
