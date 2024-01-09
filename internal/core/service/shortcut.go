@@ -17,8 +17,8 @@ type ShortcutService struct {
 	shortcutRepository ports.ShortcutRepository
 }
 
-func NewShortcutService(shortcutRepository ports.ShortcutRepository) ShortcutService {
-	return ShortcutService{shortcutRepository: shortcutRepository}
+func NewShortcutService(shortcutRepository ports.ShortcutRepository) *ShortcutService {
+	return &ShortcutService{shortcutRepository: shortcutRepository}
 }
 
 func (us *ShortcutService) GetByUrl(ctx context.Context, url string) (*domain.Shortcut, error) {
@@ -71,6 +71,12 @@ func (us *ShortcutService) GetByShortcut(ctx context.Context, shortuct string) (
 
 func (us *ShortcutService) Save(ctx context.Context, url string) (*domain.Shortcut, error) {
 
+	// 이미 등록된 url인가?
+	if _, err := us.shortcutRepository.GetByUrl(ctx, url); err == nil {
+		// 이미 등록된 url 입니다.
+		return nil, apperrors.New(apperrors.BadReqeustError, "This url is already registered.")
+	}
+
 	var shortcut string
 	var i int
 	for i = 1; i <= 5; i++ {
@@ -82,6 +88,7 @@ func (us *ShortcutService) Save(ctx context.Context, url string) (*domain.Shortc
 			break
 		}
 	}
+
 	// 생성된 5번의 uuid들이 다 중복이었을때는 서버 에러
 	if i == 5 {
 		//중복된 바로 가기 값이 많아 바로 가기를 만들지 못했습니다.

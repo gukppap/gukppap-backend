@@ -19,7 +19,7 @@ type DB struct {
 }
 
 func NewDB(ctx context.Context) (*DB, error) {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true",
 		os.Getenv("DB_USERNAME"),
 		os.Getenv("DB_PASSWORD"),
 		os.Getenv("DB_HOST"),

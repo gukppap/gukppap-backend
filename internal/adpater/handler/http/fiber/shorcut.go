@@ -16,6 +16,21 @@ func NewShortcutHandler(shortcutService ports.ShortcutService) *ShortcutHandler 
 	return &ShortcutHandler{shortcutService: shortcutService}
 }
 
+// redirect
+func (sh *ShortcutHandler) Redirect(c *fiber.Ctx) error {
+	shortcut := c.Params("shortcut")
+	if shortcut == "" {
+		return apperrors.New(apperrors.NotFoundError, "Unable to extract shortcut.")
+	}
+
+	newShortcut, err := sh.shortcutService.GetByShortcut(c.Context(), shortcut)
+	if err != nil {
+		return err
+	}
+
+	return c.Redirect(newShortcut.Url, fiber.StatusMovedPermanently)
+}
+
 // [GET] /api/v1/urls/shortcut
 func (sh *ShortcutHandler) Get(c *fiber.Ctx) error {
 	// body parsing
