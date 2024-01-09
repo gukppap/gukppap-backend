@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+
 	"fmt"
 	"math/rand"
 	"os"
@@ -28,6 +29,10 @@ func NewDB(ctx context.Context) (*DB, error) {
 
 	drv, err := sql.Open("mysql", dsn)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := drv.DB().Ping(); err != nil {
 		return nil, err
 	}
 
