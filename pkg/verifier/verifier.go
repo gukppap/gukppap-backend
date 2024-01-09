@@ -11,6 +11,11 @@ var _validator *validator.Validate
 
 func init() {
 	_validator = validator.New()
+	_validator.RegisterValidation("custom_shortcut", func(fl validator.FieldLevel) bool {
+		shortcut := fl.Field().String()
+		// 7자 이어야 유효하다.
+		return len(shortcut) == 7
+	})
 }
 
 func Run(model interface{}) error {
@@ -24,8 +29,8 @@ func Run(model interface{}) error {
 			})
 		}
 
-		marshaledJSON, _ := json.Marshal(messages)
-		return apperrors.New(apperrors.InternalServerError, string(marshaledJSON))
+		jsonMessage, _ := json.Marshal(messages)
+		return apperrors.New(apperrors.InternalServerError, string(jsonMessage))
 	}
 
 	return nil
