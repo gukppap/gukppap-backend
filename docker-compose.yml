@@ -6,9 +6,9 @@ services:
     build:  
       context: .
       dockerfile: ./Dockerfile
-    container_name: guckppap_backend
+    container_name: gukppap_backend
     networks:
-      - guckppap-network
+      - gukppap-network
     ports:
       - 9190:9190
     env_file:
@@ -18,11 +18,11 @@ services:
 
   mysql:
     image: mysql:8.2.0
-    container_name: guckppap_mysql
+    container_name: gukppap_mysql
     ports: 
       - 3306:3306
     networks:
-      - guckppap-network
+      - gukppap-network
     environment:
       MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
       MYSQL_DATABASE: "${DB_DATABASE}"
@@ -34,5 +34,5 @@ services:
       retries: 5
 
 networks:
-  guckppap-network:
+  gukppap-network:
 
