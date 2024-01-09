@@ -1,6 +1,6 @@
 # API 명세서
 
-# [GET] /v1/api/urls/shortcut
+# [GET] /api/v1/urls/shortcut
 - shortcut 조회하기 
 
 #### Request 
@@ -35,7 +35,7 @@ Content-Type: application/json
 }
 ```
 
-# [POST] /v1/api/urls/shortcut
+# [POST] /api/v1/urls/shortcut
 - shortcut 생성하기
 
 #### Request 
@@ -70,7 +70,7 @@ Content-Type: application/json
 }
 ```
 
-# [PATCH] /v1/api/urls/shortcut
+# [PATCH] /api/v1/urls/shortcut
 - shortcut 수정하기
 
 #### Request 
@@ -99,7 +99,7 @@ Content-Type: application/json
 ```
 
 
-# [DELETE] /v1/api/urls/shortcut
+# [DELETE] /api/v1/urls/shortcut
 - shortcut 삭제하기
 
 #### Request 
